@@ -34,6 +34,9 @@ class CursoController extends Controller
         $course = new Curso();
         $course->nombre = $request->input("nombre");
         $course->descripcion = $request->input("descripcion");
+        if($request->hasFile("imagen")){
+            $course->imagen = $request->file("imagen")->store("public/cursos");
+        }
 
         $course->save();
         return "Se guardo con exito";
@@ -44,7 +47,10 @@ class CursoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //crea un array con informacion del registro del idque viaja en la solicitud
+        $course = Curso::find($id);
+        //asocia el array al view usando compac
+        return view("cursos.show", compact("course"));
     }
 
     /**
@@ -52,7 +58,8 @@ class CursoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $course = Curso::find($id);
+        return view("cursos.edit", compact("course"));
     }
 
     /**
@@ -60,7 +67,13 @@ class CursoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $course = Curso::find($id);
+        $course->fill($request->except("imagen"));
+        if($request->hasFile("imgen")){
+            $course->imagen = $request->file("imagen")->store("public/cursos");
+            $course->save();
+            return "Curso actualizado";
+        }
     }
 
     /**

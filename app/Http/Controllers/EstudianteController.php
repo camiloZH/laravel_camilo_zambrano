@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Curso;
 use App\Models\Estudiante;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,10 @@ class EstudianteController extends Controller
         $student->telefono = $request->input("telefono");
         $student->curso = $request->input("curso");
 
+        if($request->hasFile("imagen")){
+            $student->imagen = $request->file("imagen")->store("public/estudiantes");
+        }
+
         $student->save();
         return "Se guardo con exito";
     }
@@ -45,7 +50,10 @@ class EstudianteController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //crea un array con informacion del registro del idque viaja en la solicitud
+        $student = Estudiante::find($id);
+        //asocia el array al view usando compac
+        return view("estudiantes.show", compact("student"));
     }
 
     /**
@@ -53,7 +61,8 @@ class EstudianteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $student = Estudiante::find($id);
+        return view("estudiantes.edit", compact("student"));
     }
 
     /**
@@ -61,7 +70,15 @@ class EstudianteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $student = Estudiante::find($id);
+        /*con fill se llena todos los campos de la tabla de estudiamtes con la informacion que viene desde el
+        requesst exepyo la q viene desde el imput llamado imagen*/
+        $student->fill($request->except("imagen"));
+         if($request->hasFile("imagen")){
+            $student->imagen = $request->file("imagen")->store("public/estudiantes");
+            $student->save();
+            return "Informacion actualizada";
+        }
     }
 
     /**

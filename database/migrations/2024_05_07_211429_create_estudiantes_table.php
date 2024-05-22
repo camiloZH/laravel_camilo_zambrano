@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("email", length:100);
             $table->string("telefono", length:100);
             $table->string("curso", length:100);
+            $table->string("imagen");
         });
     }
 

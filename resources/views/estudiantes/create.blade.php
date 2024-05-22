@@ -5,7 +5,7 @@
 @section("contenido")
 <br>
 <h3>Registrar nuevo estudiante</h3>
-    <form action="/estudiantes" method="POST">
+    <form action="/estudiantes" method="POST" enctype="multipart/form-data">
         @csrf
   <div class="mb-3">
     <label for="nombre" class="form-label">Nombre y apellidos</label>
@@ -25,6 +25,12 @@
     <label for="curso" class="form-label">Curso</label>
     <input type="text" class="form-control" id="curso" name="curso">
   </div>
+
+  <div class="mb-3">
+    <label for="imagen" class="form-label">Cargar imagen</label>
+    <input type="file" class="form-control" id="imagen" name="imagen">
+  </div>
+  <br>
 
   <button type="submit" class="btn btn-success">Guardar</button>
      </form>
